@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+SOURCE_DIR="$REPO_ROOT/.agents/skills"
+TARGETS=("$HOME/.agents/skills" "$HOME/.claude/skills")
+
+shopt -s nullglob
+removed=0
+
+for skill_dir in "$SOURCE_DIR"/*/; do
+  skill_dir="${skill_dir%/}"
+  skill_name="$(basename "$skill_dir")"
+  for target in "${TARGETS[@]}"; do
+    link="$target/$skill_name"
+    if [[ -L "$link" ]]; then
+      current="$(readlink "$link")"
+      if [[ "$current" == "$skill_dir" ]]; then
+        rm "$link"
+        echo "removed $link"
+        removed=$((removed+1))
+      else
+        echo "skip    $link  (symlink points elsewhere: $current)"
+      fi
+    fi
+  done
+done
+
+echo
+echo "removed $removed"

@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+SOURCE_DIR="$REPO_ROOT/.agents/skills"
+TARGETS=("$HOME/.agents/skills" "$HOME/.claude/skills")
+
+if [[ ! -d "$SOURCE_DIR" ]]; then
+  echo "error: $SOURCE_DIR does not exist" >&2
+  exit 1
+fi
+
+for target in "${TARGETS[@]}"; do
+  mkdir -p "$target"
+done
+
+shopt -s nullglob
+linked=0
+skipped=0
+
+for skill_dir in "$SOURCE_DIR"/*/; do
+  skill_dir="${skill_dir%/}"
+  skill_name="$(basename "$skill_dir")"
+
+  if [[ ! -f "$skill_dir/SKILL.md" ]]; then
+    echo "skip   $skill_name (no SKILL.md)"
+    skipped=$((skipped+1))
+    continue
+  fi
+
+  for target in "${TARGETS[@]}"; do
+    link="$target/$skill_name"
+    if [[ -L "$link" ]]; then
+      current="$(readlink "$link")"
+      if [[ "$current" == "$skill_dir" ]]; then
+        echo "ok     $link"
+        continue
+      fi
+      echo "relink $link  (was -> $current)"
+      rm "$link"
+    elif [[ -e "$link" ]]; then
+      echo "skip   $link  (exists, not a symlink — leaving alone)" >&2
+      skipped=$((skipped+1))
+      continue
+    fi
+    ln -s "$skill_dir" "$link"
+    echo "linked $link -> $skill_dir"
+    linked=$((linked+1))
+  done
+done
+
+echo
+echo "linked $linked, skipped $skipped"
