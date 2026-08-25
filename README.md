@@ -19,9 +19,9 @@ real files or directories at the target path.
 
 ## Authoring a new skill
 
-1. `cp -r templates .agents/skills/<your-skill-name>` then rename `.agents/skills/<your-skill-name>/SKILL.md` (already named correctly from the template).
-2. Edit the frontmatter — `name` must match the directory name exactly.
-3. Edit the body — keep under ~500 lines. Move long material to `references/`.
+1. `mkdir .agents/skills/<your-skill-name>` and create `SKILL.md` inside it.
+2. Add frontmatter — `name` must match the directory name exactly; `description` is the only activation trigger, so write it carefully (both what and when).
+3. Write the body — keep under ~500 lines. Move long material to `references/`.
 4. `bin/validate` to check.
 5. `bin/install` to link it into `~/.agents/skills/` and `~/.claude/skills/`.
 
@@ -35,3 +35,5 @@ real files or directories at the target path.
 ## Current skills
 
 - **clarify** — interview the user one question at a time to resolve open decisions in a plan.
+- **product-description** — build and verify a feature-by-feature description of a software product from its code and tests.
+- **ui-polish** — refine web UI motion, depth, and interaction states for a hand-crafted feel.
