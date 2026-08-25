@@ -5,7 +5,6 @@ This repo is a personal collection of [Agent Skills](https://agentskills.io/spec
 ## Layout
 
 - `.agents/skills/<name>/SKILL.md` — source of truth for each skill
-- `templates/SKILL.md` — copy-this-to-start a new skill
 - `bin/install`, `bin/uninstall`, `bin/validate` — manage symlinks and check skill validity
 
 ## Spec rules to keep in mind
