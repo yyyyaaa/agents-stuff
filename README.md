@@ -35,5 +35,6 @@ real files or directories at the target path.
 ## Current skills
 
 - **clarify** — interview the user one question at a time to resolve open decisions in a plan.
+- **efficient-codex** — orchestrate bounded work across Codex Sol and Terra workers while keeping integration and final judgment with the coordinator.
 - **product-description** — build and verify a feature-by-feature description of a software product from its code and tests.
 - **ui-polish** — refine web UI motion, depth, and interaction states for a hand-crafted feel.
